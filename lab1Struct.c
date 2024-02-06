@@ -31,11 +31,15 @@ void addUser1(struct user* users, char* username, char* password,
 }
 
 void addUser2(struct user* users, struct user* newUser, int* count) {
-    //Your code goes here
+    users[*count] = *newUser;
+    *count++;
 }
 
 void printUser(struct user* users, int number_of_users) {
-    //Your code goes here
+    for (int i = 0; i < number_of_users; i++) {
+        printf("username%d: %s\n", i, users[i].username);
+        printf("password%d: %s\n", i, users[i].password);
+    }
 }
 
 int main(void) {
