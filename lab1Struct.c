@@ -27,12 +27,12 @@ void addUser1(struct user* users, char* username, char* password,
     strncpy(users[*count].username, username, sizeof(users[*count].username));
     strncpy(users[*count].password, password, sizeof(users[*count].password));
     users[*count].admin = admin;
-    *count++;
+    *count = *count + 1;
 }
 
 void addUser2(struct user* users, struct user* newUser, int* count) {
     users[*count] = *newUser;
-    *count++;
+    *count = *count + 1;
 }
 
 void printUser(struct user* users, int number_of_users) {
