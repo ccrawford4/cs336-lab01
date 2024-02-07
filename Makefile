@@ -15,7 +15,7 @@ lab1Struct: $(lab1Struct_OBJS)
 	gcc -g -o $@ $^
 
 labFileIO: $(labFileIO_OBJS)
-	gcc -g -o $@ $^
+	gcc -std=c99 -o $@ $^ -lcrypt
 
 lab1BitwiseOp: $(lab1BitwiseOp_OBJS)
 	gcc -g -o $@ $^

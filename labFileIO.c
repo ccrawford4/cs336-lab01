@@ -1,4 +1,8 @@
 #define _GNU_SOURCE
+#define FILE_PATH "./credential_file"
+#define BUFFER_LEN 256
+#define ADMIN_PASS "s#1Pa5"
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -13,25 +17,80 @@ struct user {
 };
 
 char* cs336Hash(const char* password) {
-    char* new_password = (char*)malloc(10);
-    strncpy(new_password, "example", sizeof(char*) * sizeof(new_password));
-    return new_password;
-   // FIX:  return crypt(password, "00");
+    return crypt(password, "00");
 }
 
 struct user* createUsers(int* count) {
-    //Your code goes here
+      FILE* fp = fopen(FILE_PATH, "r");
+
+      if (fp == NULL) {
+        printf("ERROR! File can't be opened\n");
+        exit(EXIT_FAILURE);
+      }
+
+      int ch;
+      while ((ch = fgetc(fp)) != EOF) {
+        if (ch == '\n') {
+            *count = *count + 1;         
+        }
+      }
+
+      fclose(fp);
+
+      struct user* users = (struct user*)malloc(*count);
+      return users;
 }
 
-void populateUsers(void* users) {
-    //Your code goes here
+// ASK IF WE CAN CHANGE THIS TOO (ORIGINALLY WAS VOID* USERS)
+void populateUsers(struct user* users) {
+    // read in credential_file line-by-line, get the firstname, lastname, username, password, & admin
+    // use strtok() & atoi()
+    FILE* fp = fopen(FILE_PATH, "r");
+    char line[BUFFER_LEN];
+    
+    int count = 0;
+    while (fgets(line, sizeof(line), fp)) {
+        char* token = strtok(line, "\t\n");
+        int index = 0;
+        while (token != NULL) {
+            switch (index) {
+                case 0:
+                    strncpy(users[count].firstname, token, sizeof(users[count].firstname));
+                    break;
+                case 1:
+                    strncpy(users[count].lastname, token, sizeof(users[count].lastname));
+                    break;
+                case 2:
+                    strncpy(users[count].username, token, sizeof(users[count].username));
+                    break;
+                case 3:
+                    strncpy(users[count].password, token, sizeof(users[count].password));
+                    break;
+                case 4:
+                    int value = atoi(token);
+                    if (value == 0 && token[0] != '0') {
+                        printf("ERROR! %s is an invalid number.\n", token);
+                        exit(EXIT_FAILURE);
+                    }
+                    users[count].admin = value;
+                    break;
+
+             }
+             index++;
+             token = strtok(NULL, "\t\n");
+        }
+        count++;
+    }
+
 }
 
 int checkAdminPassword(char* password, struct user* users, int count) {
     for (int i = 0; i < count; ++i) {
         if (strcmp((users + i)->username, "admin") == 0) {
-            // Complete this condition
-            if (1) {
+            const char* const_password = password;
+            char* hash = cs336Hash(const_password);
+
+            if (strcmp((users + i)->password, hash) == 0) {
                 return 1;
             }
             else {
