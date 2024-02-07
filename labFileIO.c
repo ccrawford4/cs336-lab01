@@ -103,13 +103,14 @@ int checkAdminPassword(char* password, struct user* users, int count) {
 
 struct user* addUser(struct user* users, int* count, char* username, char* password, char* firstname, char* lastname, int admin) {
     // ISSUE HERE - DEBUG TO COME
-    users = realloc(users, (*count) * sizeof(struct user));
+   // users = realloc(users, (*count) * sizeof(struct user));
+   /*
 
     if (users == NULL) {
         printf("ERROR! Memory Allocation failed.\n");
         free(users);
         exit(EXIT_FAILURE);
-    }
+    }*/
 
     strncpy(users[*count].username, username, sizeof(users[*count].username));
     const char* const_password = password;
@@ -125,7 +126,10 @@ struct user* addUser(struct user* users, int* count, char* username, char* passw
 }
 
 void saveUsers(struct user* users, int count) {
-    //Your code goes here
+    for (int i = 0; i < count; i++) {
+        printf("username%d: %s\n", i, users[i].username);
+        printf("password%d: %s\n", i, users[i].password);
+    }
 }
 
 int main(void) {
