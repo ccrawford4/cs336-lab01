@@ -36,7 +36,8 @@ struct user* createUsers(int* count) {
       }
 
       fclose(fp);
-
+        
+      // ISSUE HERE - DEBUG TO COME
       struct user* users = (struct user*)malloc(*count);
       return users;
 }
@@ -81,7 +82,6 @@ void populateUsers(struct user* users) {
         }
         count++;
     }
-
 }
 
 int checkAdminPassword(char* password, struct user* users, int count) {
@@ -102,7 +102,26 @@ int checkAdminPassword(char* password, struct user* users, int count) {
 }
 
 struct user* addUser(struct user* users, int* count, char* username, char* password, char* firstname, char* lastname, int admin) {
-    //Your code goes here
+    // ISSUE HERE - DEBUG TO COME
+    users = realloc(users, (*count) * sizeof(struct user));
+
+    if (users == NULL) {
+        printf("ERROR! Memory Allocation failed.\n");
+        free(users);
+        exit(EXIT_FAILURE);
+    }
+
+    strncpy(users[*count].username, username, sizeof(users[*count].username));
+    const char* const_password = password;
+    char* hash = cs336Hash(const_password);
+    strncpy(users[*count].password, hash, sizeof(users[*count].password));
+    strncpy(users[*count].firstname, firstname, sizeof(users[*count].firstname));
+    strncpy(users[*count].lastname, lastname, sizeof(users[*count].lastname));
+    users[*count].admin = admin;
+
+    *count = *count + 1;
+
+    return users;
 }
 
 void saveUsers(struct user* users, int count) {
