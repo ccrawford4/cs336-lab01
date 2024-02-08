@@ -59,19 +59,21 @@ void populateUsers(struct user* users) {
         token = strtok(line, "\t");
         int index = 0;
         while (token != NULL) {
-            printf("token: %s\n", token);
             switch (index) {
                 case 0:
-                    strncpy(users[count].firstname, token, sizeof(users[count].firstname));
-                    users[count].firstname[sizeof(users[count].firstname) - 1] = '\0';
+                    snprintf(users[count].firstname, sizeof(users[count].firstname), "%s", token); 
+                   // strncpy(users[count].firstname, token, sizeof(users[count].firstname));
+                  //  users[count].firstname[sizeof(users[count].firstname) - 1] = '\0';
                     break;
                 case 1:
-                   strncpy(users[count].lastname, token, sizeof(users[count].lastname));
-                   users[count].lastname[sizeof(users[count].lastname) - 1] = '\0';
+                   snprintf(users[count].lastname, sizeof(users[count].lastname), "%s", token); 
+                 //  strncpy(users[count].lastname, token, sizeof(users[count].lastname));
+                 //  users[count].lastname[sizeof(users[count].lastname) - 1] = '\0';
                    break;
                 case 2:
-                   strncpy(users[count].username, token, sizeof(users[count].username));
-                   users[count].username[sizeof(users[count].username) - 1] = '\0';
+                    snprintf(users[count].username, sizeof(users[count].username), "%s", token); 
+                 //  strncpy(users[count].username, token, sizeof(users[count].username));
+                 //  users[count].username[sizeof(users[count].username) - 1] = '\0';
                    break;
                 case 3:
                    snprintf(users[count].password, sizeof(users[count].password), "%s", token); 
