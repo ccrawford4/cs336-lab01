@@ -44,6 +44,10 @@ struct user* createUsers(int* count) {
 // ASK IF WE CAN CHANGE THIS TOO (ORIGINALLY WAS VOID* USERS)
 void populateUsers(struct user* users) {
     FILE* fp = fopen(FILE_PATH, "r");
+    if (fp == NULL) {
+        printf("ERROR Opening file %s\n", FILE_PATH);
+        exit(EXIT_FAILURE);
+    }
     char line[100];
     
     int count = 0;
@@ -53,24 +57,26 @@ void populateUsers(struct user* users) {
         line[len - 1] = '\0';
 
         token = strtok(line, "\t");
+        int index = 0;
         while (token != NULL) {
             printf("token: %s\n", token);
-            token = strtok(NULL, "\t");
-        }
-        int index = 0;
-       /* while (token != NULL) {
             switch (index) {
                 case 0:
                     strncpy(users[count].firstname, token, sizeof(users[count].firstname));
+                    users[count].firstname[sizeof(users[count].firstname) - 1] = '\0';
                     break;
                 case 1:
-                    strncpy(users[count].lastname, token, sizeof(users[count].lastname));
-                    break;
+                   strncpy(users[count].lastname, token, sizeof(users[count].lastname));
+                   users[count].lastname[sizeof(users[count].lastname) - 1] = '\0';
+                   break;
                 case 2:
-                    strncpy(users[count].username, token, sizeof(users[count].username));
-                    break;
+                   strncpy(users[count].username, token, sizeof(users[count].username));
+                   users[count].username[sizeof(users[count].username) - 1] = '\0';
+                   break;
                 case 3:
-                    strncpy(users[count].password, token, sizeof(users[count].password));
+                   snprintf(users[count].password, sizeof(users[count].password), "%s", token); 
+                   // strncpy(users[count].password, token, sizeof(users[count].password));
+                   // users[count].password[sizeof(users[count].password) - 1] = '\0';
                     break;
                 case 4:
                     int value = atoi(token);
@@ -80,11 +86,12 @@ void populateUsers(struct user* users) {
                     }
                     users[count].admin = value;
                     break;
-
-             }
-             index++;
-             token = strtok(NULL, "\t");
-        }*/
+                 default:
+                    break;               
+            }
+            token = strtok(NULL, "\t");
+            index++;
+        }
 
         count++;
     }
