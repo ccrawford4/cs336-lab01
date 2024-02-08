@@ -37,23 +37,28 @@ struct user* createUsers(int* count) {
 
       fclose(fp);
         
-      // ISSUE HERE - DEBUG TO COME
       struct user* users = (struct user*)malloc(*count);
       return users;
 }
 
 // ASK IF WE CAN CHANGE THIS TOO (ORIGINALLY WAS VOID* USERS)
 void populateUsers(struct user* users) {
-    // read in credential_file line-by-line, get the firstname, lastname, username, password, & admin
-    // use strtok() & atoi()
     FILE* fp = fopen(FILE_PATH, "r");
-    char line[BUFFER_LEN];
+    char line[100];
     
     int count = 0;
+    char* token;
     while (fgets(line, sizeof(line), fp)) {
-        char* token = strtok(line, "\t\n");
-        int index = 0;
+        int len = strlen(line);
+        line[len - 1] = '\0';
+
+        token = strtok(line, "\t");
         while (token != NULL) {
+            printf("token: %s\n", token);
+            token = strtok(NULL, "\t");
+        }
+        int index = 0;
+       /* while (token != NULL) {
             switch (index) {
                 case 0:
                     strncpy(users[count].firstname, token, sizeof(users[count].firstname));
@@ -78,8 +83,9 @@ void populateUsers(struct user* users) {
 
              }
              index++;
-             token = strtok(NULL, "\t\n");
-        }
+             token = strtok(NULL, "\t");
+        }*/
+
         count++;
     }
 }
@@ -102,15 +108,6 @@ int checkAdminPassword(char* password, struct user* users, int count) {
 }
 
 struct user* addUser(struct user* users, int* count, char* username, char* password, char* firstname, char* lastname, int admin) {
-    // ISSUE HERE - DEBUG TO COME
-   // users = realloc(users, (*count) * sizeof(struct user));
-   /*
-
-    if (users == NULL) {
-        printf("ERROR! Memory Allocation failed.\n");
-        free(users);
-        exit(EXIT_FAILURE);
-    }*/
 
     strncpy(users[*count].username, username, sizeof(users[*count].username));
     const char* const_password = password;
