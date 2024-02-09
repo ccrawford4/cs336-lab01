@@ -62,23 +62,15 @@ void populateUsers(struct user* users) {
             switch (index) {
                 case 0:
                     snprintf(users[count].firstname, sizeof(users[count].firstname), "%s", token); 
-                   // strncpy(users[count].firstname, token, sizeof(users[count].firstname));
-                  //  users[count].firstname[sizeof(users[count].firstname) - 1] = '\0';
                     break;
                 case 1:
                    snprintf(users[count].lastname, sizeof(users[count].lastname), "%s", token); 
-                 //  strncpy(users[count].lastname, token, sizeof(users[count].lastname));
-                 //  users[count].lastname[sizeof(users[count].lastname) - 1] = '\0';
                    break;
                 case 2:
                     snprintf(users[count].username, sizeof(users[count].username), "%s", token); 
-                 //  strncpy(users[count].username, token, sizeof(users[count].username));
-                 //  users[count].username[sizeof(users[count].username) - 1] = '\0';
                    break;
                 case 3:
                    snprintf(users[count].password, sizeof(users[count].password), "%s", token); 
-                   // strncpy(users[count].password, token, sizeof(users[count].password));
-                   // users[count].password[sizeof(users[count].password) - 1] = '\0';
                     break;
                 case 4:
                     int value = atoi(token);
@@ -117,7 +109,6 @@ int checkAdminPassword(char* password, struct user* users, int count) {
 }
 
 struct user* addUser(struct user* users, int* count, char* username, char* password, char* firstname, char* lastname, int admin) {
-
     strncpy(users[*count].username, username, sizeof(users[*count].username));
     const char* const_password = password;
     char* hash = cs336Hash(const_password);
@@ -132,10 +123,18 @@ struct user* addUser(struct user* users, int* count, char* username, char* passw
 }
 
 void saveUsers(struct user* users, int count) {
-    for (int i = 0; i < count; i++) {
-        printf("username%d: %s\n", i, users[i].username);
-        printf("password%d: %s\n", i, users[i].password);
+    FILE *fp = fopen(FILE_PATH, "a");
+    if (!fp) {
+        printf("ERROR! Could not open file %s\n", FILE_PATH);
+        exit(EXIT_FAILURE);
     }
+    int i = count  - 1;
+    char* firstname = users[i].firstname;
+    char* lastname = users[i].lastname;
+    char* username = users[i].username;
+    char* password = users[i].password;
+    int admin = users[i].admin;
+    fprintf(fp, "%s\t%s\t%s\t%s\t%d\t\n", firstname, lastname, username, password, admin);
 }
 
 int main(void) {
