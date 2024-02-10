@@ -64,26 +64,28 @@ void printPermissions(struct user* user) {
     }
 }
 
-// Takes in a number 0-7???
 void setPermissions(int new_permissions, struct user* user) {
-    // 1 = 0001  (execute)
-    // 2 = 0010  (write)
-    // 4 = 0100  (read)
-    // 7 = 0111  (read, write, & execute)
-
-
+     user->permissions = new_permissions;
 }
 
-int main(void) {
+int main(int argc, char** argv) {
     struct user user;
     strcpy(user.username, "admin");
     strcpy(user.password, "s#1Pa5");
     user.permissions = 0; //Sets the permissions to 0
-    grantPermission(0, &user);
-    grantPermission(1, &user);
+    
+    for (int i = 1; i < argc; i++) {
+        int value = atoi(argv[i]);
+        if (value < 0) {
+            value = value * -1;
+            revokePermission(value, &user);
+        }
+        else {
+            grantPermission(value &user);
+        }
+    }
+
     printPermissions(&user);
-    revokePermission(1, &user);
-    grantPermission(2, &user);
-    printPermissions(&user);
+
     return EXIT_SUCCESS;
 }
