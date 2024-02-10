@@ -26,15 +26,21 @@ void compare() {
 }
 
 void grantPermission(int bitIndex, struct user* user) {
-    //Complete me
+    unsigned char bit = 1 << bitIndex;
+    user->permissions = user->permissions | bit;
 }
 
 void revokePermission(int bitIndex, struct user* user) {
-    //Complete me
+    unsigned char bit = 1 << bitIndex;
+    user->permissions = user->permissions ^ bit;
 }
 
 int checkPermission(int bitIndex, struct user* user) {
-    //Complete me
+    unsigned char bit = 1 << bitIndex;
+    if (user->permissions & bit) {
+        return 1;
+    }
+    return 0;
 }
 
 void printPermissions(struct user* user) {
@@ -58,8 +64,14 @@ void printPermissions(struct user* user) {
     }
 }
 
+// Takes in a number 0-7???
 void setPermissions(int new_permissions, struct user* user) {
-    //Complete me
+    // 1 = 0001  (execute)
+    // 2 = 0010  (write)
+    // 4 = 0100  (read)
+    // 7 = 0111  (read, write, & execute)
+
+
 }
 
 int main(void) {
