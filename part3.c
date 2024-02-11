@@ -65,7 +65,41 @@ void printPermissions(struct user* user) {
 }
 
 void setPermissions(int new_permissions, struct user* user) {
-     user->permissions = new_permissions;
+      unsigned char bit = 0x00;
+      switch (new_permissions) {
+        case 0: break;
+        case 1: 
+            bit = bit | (1 << 0);
+            user->permissions = user->permissions | bit;
+            break;
+       case 2:
+            bit = bit | (1 << 1);
+            user->permissions = user->permissions | bit;
+            break;
+       case 3:
+            bit = bit | (1 << 0) | (1 << 1);
+            user->permissions = user->permissions | bit;
+            break;
+      case 4:
+            bit = bit | (1 << 2);
+             user->permissions = user->permissions | bit;
+            break;
+      case 5:
+            bit = bit | (1 << 0) | (1 << 2);
+            user->permissions = user->permissions | bit;
+            break;
+      case 6:
+            bit = bit | (1 << 1) | (1 << 2);
+            user->permissions = user->permissions | bit;
+            break;
+      case 7:
+            bit = bit | (1 << 0) | (1 << 1) | (1 << 2);
+            user->permissions = user->permissions | bit;
+            break;
+      default:
+         printf("ERROR! Invalid input. Value must be 0-7.\n");
+         exit(EXIT_FAILURE);
+      }
 }
 
 int main(int argc, char** argv) {
