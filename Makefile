@@ -1,23 +1,23 @@
-PROG = lab1Struct labFileIO lab1BitwiseOp
+PROG = part1 part2 part3
 
-lab1Struct_OBJS = lab1Struct.o
-labFileIO_OBJS = labFileIO.o
-lab1BitwiseOp_OBJS = lab1BitwiseOp.o
+part1_OBJS = part1.o
+part2_OBJS = part2.o
+part3_OBJS = part3.o
 
-OBJS = $(lab1Struct_OBJS) $(labFileIO_OBJS) $(lab1BitwiseOp_OBJS)
+OBJS = $(part1_OBJS) $(part2_OBJS) $(part3_OBJS)
 
 %.o: %.c
 	gcc -g -c -o $@ $<
 
 all: $(PROG)
 
-lab1Struct: $(lab1Struct_OBJS)
+part1: $(part1_OBJS)
 	gcc -g -o $@ $^
 
-labFileIO: $(labFileIO_OBJS)
+part2: $(part2_OBJS)
 	gcc -std=c99 -o $@ $^ -lcrypt
 
-lab1BitwiseOp: $(lab1BitwiseOp_OBJS)
+part3: $(part3_OBJS)
 	gcc -g -o $@ $^
 
 clean:
