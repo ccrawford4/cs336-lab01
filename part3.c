@@ -107,40 +107,11 @@ int main(int argc, char** argv) {
     strcpy(user.username, "admin");
     strcpy(user.password, "s#1Pa5");
     user.permissions = 0; //Sets the permissions to 0
-    
-    char* command = argv[1];
-
-    if (strcmp(command, "grant") == 0) {
-        for (int i = 2; i < argc; i++) {
-            int value = atoi(argv[i]);
-            if (value < 0) {
-                printf("ERROR: Negative permission values not allowed for grant. Use revoke instead.\n");
-                return EXIT_FAILURE;
-            }
-            grantPermission(value, &user);
-        }
-    } else if (strcmp(command, "revoke") == 0) {
-        for (int i = 2; i < argc; i++) {
-            int value = atoi(argv[i]);
-            if (value < 0) {
-                printf("ERROR: Negative permission values not allowed for revoke. Use grant instead.\n");
-                return EXIT_FAILURE;
-            }
-            revokePermission(value, &user);
-        }
-    } else if (strcmp(command, "set") == 0) {
-        if (argc != 3) {
-            printf("ERROR: Set command requires exactly one permission value.\n");
-            return EXIT_FAILURE;
-        }
-        int value = atoi(argv[2]);
-        setPermissions(value, &user);
-    } else {
-        printf("ERROR: Invalid command. Supported commands are grant, revoke, and set.\n");
-        return EXIT_FAILURE;
-    }
-
+    grantPermission(0, &user);
+    grantPermission(1, &user);
     printPermissions(&user);
-
+    revokePermission(1, &user);
+    grantPermission(2, &user);
+    printPermissions(&user);
     return EXIT_SUCCESS; 
 }
