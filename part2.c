@@ -76,7 +76,6 @@ void populateUsers(struct user *users) {
                     snprintf(users[count].username, sizeof(users[count].username), "%s", token);
                     break;
                 case 3:
-                   memset(users[count].password, 0, sizeof(users[count].username));
                    snprintf(users[count].password, sizeof(users[count].password), "%s", token);
                     break;
                case 4:
@@ -180,7 +179,7 @@ int main(void) {
       return EXIT_FAILURE;
     }
   }
-//  saveUsers(users, user_count);
+  saveUsers(users, user_count);
   free(users);
   return EXIT_SUCCESS;
 }
