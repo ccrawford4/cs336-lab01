@@ -180,7 +180,7 @@ int main(void) {
       return EXIT_FAILURE;
     }
   }
-  saveUsers(users, user_count);
+//  saveUsers(users, user_count);
   free(users);
   return EXIT_SUCCESS;
 }
