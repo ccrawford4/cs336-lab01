@@ -25,16 +25,20 @@ void compare() {
   printf("The size of user is %d.\n", sizeof(struct user));
 }
 
+// Grants user permissions by putting one bit into the appropriate index
 void grantPermission(int bitIndex, struct user *user) {
   unsigned char bit = 1 << bitIndex;
   user->permissions = user->permissions | bit;
 }
 
+// Revokes user permissions by using one bit in the correct index and the ^ 
+// operator to get rid of the bit from the user->permissions
 void revokePermission(int bitIndex, struct user *user) {
   unsigned char bit = 1 << bitIndex;
   user->permissions = user->permissions ^ bit;
 }
 
+// Checks to see that there is a bit or "permission" at said bitIndex
 int checkPermission(int bitIndex, struct user *user) {
   unsigned char bit = 1 << bitIndex;
   if (user->permissions & bit) {
@@ -43,6 +47,7 @@ int checkPermission(int bitIndex, struct user *user) {
   return 0;
 }
 
+// Prints the permissions for the user
 void printPermissions(struct user *user) {
   if (checkPermission(0, user)) {
     printf("%s has write permission.\n", user->username);
@@ -61,6 +66,7 @@ void printPermissions(struct user *user) {
   }
 }
 
+// Sets the permissions given an integer
 void setPermissions(int new_permissions, struct user *user) {
   unsigned char bit = 0x00;
   switch (new_permissions) {
