@@ -2,6 +2,7 @@
 #define FILE_PATH "./credential_file"
 #define BUFFER_LEN 256
 #define ADMIN_PASS "s#1Pa5"
+#define EMPTY_STR ""
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -51,44 +52,50 @@ void populateUsers(struct user *users) {
     exit(EXIT_FAILURE);
   }
   char line[BUFFER_LEN];
+  char *token;
 
+  const char *delim = "\t\n"; 
   int count = 0;
-  int index = 0;
-  while (fscanf(fp, "%s", line) == 1) {
-    int len = strnlen(line, sizeof(line));
-    line[len] = '\0';
-    switch (index) {
-    case 0:
-      snprintf(users[count].firstname, sizeof(users[count].firstname), "%s",
-               line);
-      break;
-    case 1:
-      snprintf(users[count].lastname, sizeof(users[count].lastname), "%s",
-               line);
-      break;
-    case 2:
-      snprintf(users[count].username, sizeof(users[count].username), "%s",
-               line);
-      break;
-    case 3:
-      snprintf(users[count].password, sizeof(users[count].password), "%s",
-               line);
-      break;
-    case 4:
-      int value = atoi(line);
-      if (value == 0 && line[0] != '0') {
-        printf("ERROR! %s is an invalid number.\n", line);
-        exit(EXIT_FAILURE);
-      }
-      users[count].admin = value;
-      index = 0; // Reset the index and increase the count
-      count++;
-      break;
-    default:
-      break;
+
+  while (fgets(line, BUFFER_LEN, fp) != NULL) {
+    int index = 0;
+    token = strtok(line, delim);
+
+    while (token != NULL) {
+       switch (index) {
+                case 0:
+                    memset(users[count].firstname, 0, sizeof(users[count].firstname));
+                    snprintf(users[count].firstname, sizeof(users[count].firstname), "%s", token);
+                    break;
+                case 1:
+                    memset(users[count].lastname, 0, sizeof(users[count].lastname));
+                    snprintf(users[count].lastname, sizeof(users[count].lastname), "%s", token);
+                    break;
+                case 2:
+                    memset(users[count].username, 0, sizeof(users[count].username));
+                    snprintf(users[count].username, sizeof(users[count].username), "%s", token);
+                    break;
+                case 3:
+                   memset(users[count].password, 0, sizeof(users[count].username));
+                   snprintf(users[count].password, sizeof(users[count].password), "%s", token);
+                    break;
+               case 4:
+                    int value = atoi(token);
+                    if (value == 0 && token[0] != '0') {
+                        printf("ERROR! Invalid Number: %s\n", token);
+                        exit(EXIT_FAILURE);
+                    }
+                    users[count].admin = value;
+                    break;
+                default:
+                    break;
+            }
+
+            token = strtok(NULL, delim);
+            index++;
+        }
+        count++;
     }
-  }
-  fclose(fp);
 }
 
 // Validates if the password entered is the same as the admin password
